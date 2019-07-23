@@ -3,13 +3,12 @@
 const bird = "tweeter";
 function myHouse(){
   const cat = "Momo";
-  console.log("my house can acess the " + bird);
+  console.log(`my house can acess the ${bird} and ${cat} but not dog`);
   function myRoom(){
     const dog = "Mako";
-    console.log(dog + "says ruff");
-    console.log(cat + "says meow" + "because the room can access the cat, but not the bird");
+    console.log(`${dog} says ruff`);
+    console.log(`${cat} says meow because the room can access the cat, and the ${bird}`);
   }
-
   return myRoom;
 }
 
