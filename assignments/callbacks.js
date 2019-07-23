@@ -68,8 +68,35 @@ contains("Gum", items, value => console.log(value));
 
 /* STRETCH PROBLEM */
 
+const myItems = ['China','China','Fortune','Pickles'];
+
+//first try
 function removeDuplicates(array, cb) {
   // removeDuplicates removes all duplicate values from the given array.
   // Pass the duplicate free array to the callback function.
   // Do not mutate the original array.
+  let duplicateFree = [];
+  for (let i = 0; i < array.length; i++){
+    if (!array.slice(i+1,array.length).includes(array[i])) {
+      duplicateFree.push(array[i]);
+    }
+  }
+  return cb(duplicateFree);
 }
+
+//second try
+function removeDuplicates(array, cb) {
+  duplicateFree = array.filter( (item, index) => !array.slice(index+1, array.length).includes(item));
+  return cb(duplicateFree);
+}
+
+//third try
+function removeDuplicates(array, cb) {
+  duplicateFree = array.filter( (item) => !array.slice(index+1, array.length).includes(item));
+  return cb(duplicateFree);
+}
+//gave up trying to make it simpler
+
+removeDuplicates(myItems, function(list){
+  console.log(list);
+})
