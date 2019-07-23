@@ -40,7 +40,9 @@ function last(arr, cb) {
   cb(arr[arr.length-1]);
 }
 
-last(items, item => console.log(item));
+last(items, function(item) {
+  console.log(item);
+})
 
 function sumNums(x, y, cb) {
   // sumNums adds two numbers (x, y) and passes the result to the callback.
