@@ -1,6 +1,22 @@
 // ==== Challenge 1: Write your own closure ====
 // Write a simple closure of your own creation.  Keep it simple!
+const bird = "tweeter";
+function myHouse(){
+  const cat = "Momo";
+  console.log("my house can acess the " + bird);
+  function myRoom(){
+    const dog = "Mako";
+    console.log(dog + "says ruff");
+    console.log(cat + "says meow" + "because the room can access the cat, but not the bird");
+  }
 
+  return myRoom;
+}
+
+myHouse();
+
+const makoNoise = myHouse();
+makoNoise();
 
 /* STRETCH PROBLEMS, Do not attempt until you have completed all previous tasks for today's project files */
 
