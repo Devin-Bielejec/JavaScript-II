@@ -126,6 +126,10 @@ function mean(array){
     return array.reduce( (acc, cur) => acc + cur, 0)/array.length;
 }
 
+function summation(array){
+    return array.reduce( (acc, cur) => acc + cur, 0 );
+}
+
 function correlationCoefficient(x, y) {
     const xMean = mean(x);
     const yMean = mean(y);
@@ -136,20 +140,41 @@ function correlationCoefficient(x, y) {
     //combine two lists
     //get list of [[a1, a2, etc],[b1, b2, etc]]
     let combinedArray = [xMinusMean, yMinusMean];
-    console.log(combinedArray);
     
     //map list of 2 lists that have a and b values - multiply them, so a*b
     const valuesMultiplied = xMinusMean.map( (item, index) => item*yMinusMean[index] , 1);
-    console.log(valuesMultiplied);
     //now reduce the list by summing all
-    const valuesSummed = valuesMultiplied.reduce( (acc, cur) => acc + cur ); 
-    console.log(valuesSummed);
+    let valuesSummed = summation(valuesMultiplied); 
+
+    //values Summed is the top of the numerator for CC
+    const numerator = valuesSummed;
+
+    const xMinusMeanSquared = xMinusMean.map( item => item**2 );
+    const yMinusMeanSquared = yMinusMean.map( item => item**2 );
+
+    const xMinusMeanSquaredSum = summation(xMinusMeanSquared);
+    const yMinusMeanSquaredSum = summation(yMinusMeanSquared);
+
+    const denominator = Math.sqrt(xMinusMeanSquaredSum*yMinusMeanSquaredSum);
+
+    return numerator/denominator;
 }
 
-//example from internet to make sure I'm getting the same parts
-const sp500 = [1691.75, 1977.80, 1884.09, 2151.13, 2519.36];
-const apple = [68.96, 100.11, 109.06, 112.18, 154.12];
+ccShirtsDonations = correlationCoefficient(donations, shirts);
+console.log(ccShirtsDonations);
 
-correlationCoefficient(sp500, apple);
+//Dear Boss, there doesn't seem to be a correlation between the donation size and shirt size; there is a weak postive correlation between the amount donated and the shirt size. As the shirt size gets bigger, the donations get slightly bigger. There is not enough evidence to conclude a valid argument.
+
+
+//example from internet to make sure I'm getting the same parts
+// const sp500 = [1691.75, 1977.80, 1884.09, 2151.13, 2519.36];
+// const apple = [68.96, 100.11, 109.06, 112.18, 154.12];
+
+// const ccExample = correlationCoefficient(sp500, apple);
+// console.log(ccExample);
+
+//example worked
+
+
 
 //please uncomment stuff above
