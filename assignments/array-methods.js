@@ -56,7 +56,7 @@ const runners = [{"id":1,"first_name":"Charmain","last_name":"Seiler","email":"c
 // ==== Challenge 1: Use .forEach() ====
 // The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName. 
 let newFullName = [];
-runners.forEach( runner => newFullName.push(runner["first_name"] + " " + runner["last_name"]));
+runners.forEach( runner => newFullName.push(`${runner["first_name"]} ${runner["last_name"]}`));
 
 console.log(newFullName);
 
@@ -83,6 +83,7 @@ console.log(ticketPriceTotal);
 //sizes include: XS, S, M, L, XL, 2XL, 3XL
 let shirtSizeFrequency = {};
 const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+
 sizes.forEach( function(size) {
     shirtSizeFrequency[size] = runners.filter( runner => runner["shirt_size"] == size).length;
 })
@@ -112,7 +113,6 @@ console.log(donationsEuros);
 
 const donations = runners.map( runner => runner["donation"]);
 
-const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
 
 let shirts = runners.map( item => sizes.indexOf(item["shirt_size"])+1)
 //is there a better faster way to do this, do I have to create a new object every time?
