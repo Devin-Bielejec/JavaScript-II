@@ -55,29 +55,126 @@ const runners = [{"id":1,"first_name":"Charmain","last_name":"Seiler","email":"c
 
 // ==== Challenge 1: Use .forEach() ====
 // The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName. 
-let fullName = [];
-console.log(fullName);
+let newFullName = [];
+runners.forEach( runner => newFullName.push(runner["first_name"] + " " + runner["last_name"]));
+
+console.log(newFullName);
 
 // ==== Challenge 2: Use .map() ====
 // The event director needs to have all the runner's first names converted to uppercase because the director BECAME DRUNK WITH POWER. Convert each first name into all caps and log the result
-let allCaps = [];
+let allCaps = runners.map( runner => runner["first_name"].toUpperCase());
 console.log(allCaps); 
 
 // ==== Challenge 3: Use .filter() ====
-// The large shirts won't be available for the event due to an ordering issue.  Get a list of runners with large sized shirts so they can choose a different size. Return an array named largeShirts that contains information about the runners that have a shirt size of L and log the result
-let largeShirts = [];
+// The large shirts won't be available for the event due to an ordering issue.  Get a list of runners with large sized shirts so they can choose a different size. Return an array named largeShirts that contains information(so an obj) about the runners that have a shirt size of L and log the result
+let largeShirts = runners.filter( runner => runner["shirt_size"] == "L");
 console.log(largeShirts);
 
 // ==== Challenge 4: Use .reduce() ====
 // The donations need to be tallied up and reported for tax purposes. Add up all the donations into a ticketPriceTotal array and log the result
-let ticketPriceTotal = [];
+let ticketPriceTotal = runners.reduce( (acc, cur) => acc + cur["donation"], 0);
 console.log(ticketPriceTotal);
 
 // ==== Challenge 5: Be Creative ====
 // Now that you have used .forEach(), .map(), .filter(), and .reduce().  I want you to think of potential problems you could solve given the data set and the 5k fun run theme.  Try to create and then solve 3 unique problems using one or many of the array methods listed above.
 
-// Problem 1
+// Problem 1 - The director is curious about the sizes of the shirts for the runners in terms of how many to purchase for next year. Give the director an object dictating how many runners have smalls, mediums, larges, etc.
 
-// Problem 2
+//sizes include: XS, S, M, L, XL, 2XL, 3XL
+let shirtSizeFrequency = {};
+const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+sizes.forEach( function(size) {
+    shirtSizeFrequency[size] = runners.filter( runner => runner["shirt_size"] == size).length;
+})
+console.log(shirtSizeFrequency);
+//check math
+const numberOfShirts = Object.keys(shirtSizeFrequency).reduce( (acc, cur) => acc + shirtSizeFrequency[cur], 0);
+console.log(numberOfShirts);
+//cool beans
 
-// Problem 3
+
+// Problem 2 - The director seriously hates when people put numbers in their emails. He is DRUNK WITH POWER again and demands that none of the people have numbers in their emails. He wants a list of all the people that have a number in their email.
+const noNumbers = runners.filter( runner => !/\d/.test(runner["email"]) );
+console.log(noNumbers);
+
+
+
+
+// Problem 3 - The director is moving the race to Europe. The director wants to get a feel for how many euros of donations he would be getting. Please send the director the same list but have the donations be in Euros.
+const donationsEuros = runners.map( runner => runner["donation"] *= .9);
+
+console.log(donationsEuros);
+
+
+//Problem 4 - The director wants to run some statistics to determine if there is a relationship between the amount of a donation and shirt_size. Compute the correlation coefficient and state what it means in the context of the problem.
+
+//first we need to change all the shirt sizes to numbers for easier readability. And we only care about the shirt size and donation, so we can filter out ther rest.
+
+const donations = runners.map( runner => runner["donation"]);
+
+const sizes = ["XS", "S", "M", "L", "XL", "2XL", "3XL"];
+
+let shirts = runners.map( item => sizes.indexOf(item["shirt_size"])+1)
+//is there a better faster way to do this, do I have to create a new object every time?
+
+console.log(shirts);
+
+
+//correlation coefficent via the formula
+//https://cdn.corporatefinanceinstitute.com/assets/correlation1.png
+function mean(array){
+    return array.reduce( (acc, cur) => acc + cur, 0)/array.length;
+}
+
+function summation(array){
+    return array.reduce( (acc, cur) => acc + cur, 0 );
+}
+
+function correlationCoefficient(x, y) {
+    const xMean = mean(x);
+    const yMean = mean(y);
+
+    //get a list by subtracting each value by the mean, get both these lists
+    const xMinusMean = x.map(item => item - xMean);
+    const yMinusMean = y.map(item => item - yMean);
+    //combine two lists
+    //get list of [[a1, a2, etc],[b1, b2, etc]]
+    let combinedArray = [xMinusMean, yMinusMean];
+    
+    //map list of 2 lists that have a and b values - multiply them, so a*b
+    const valuesMultiplied = xMinusMean.map( (item, index) => item*yMinusMean[index] , 1);
+    //now reduce the list by summing all
+    let valuesSummed = summation(valuesMultiplied); 
+
+    //values Summed is the top of the numerator for CC
+    const numerator = valuesSummed;
+
+    const xMinusMeanSquared = xMinusMean.map( item => item**2 );
+    const yMinusMeanSquared = yMinusMean.map( item => item**2 );
+
+    const xMinusMeanSquaredSum = summation(xMinusMeanSquared);
+    const yMinusMeanSquaredSum = summation(yMinusMeanSquared);
+
+    const denominator = Math.sqrt(xMinusMeanSquaredSum*yMinusMeanSquaredSum);
+
+    return numerator/denominator;
+}
+
+ccShirtsDonations = correlationCoefficient(donations, shirts);
+console.log(ccShirtsDonations);
+
+//Dear Boss, there doesn't seem to be a correlation between the donation size and shirt size; there is a weak postive correlation between the amount donated and the shirt size. As the shirt size gets bigger, the donations get slightly bigger. There is not enough evidence to conclude a valid argument.
+
+
+//example from internet to make sure I'm getting the same parts
+// const sp500 = [1691.75, 1977.80, 1884.09, 2151.13, 2519.36];
+// const apple = [68.96, 100.11, 109.06, 112.18, 154.12];
+
+// const ccExample = correlationCoefficient(sp500, apple);
+// console.log(ccExample);
+
+//example worked
+
+
+
+//please uncomment stuff above

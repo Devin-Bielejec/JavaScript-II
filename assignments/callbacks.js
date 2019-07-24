@@ -27,29 +27,76 @@ const items = ['Pencil', 'Notebook', 'yo-yo', 'Gum'];
 
 function getLength(arr, cb) {
   // getLength passes the length of the array into the callback.
+  return cb(arr.length);
 }
+
+//invocation
+getLength(items, function(length) {
+  console.log(length);
+})
 
 function last(arr, cb) {
   // last passes the last item of the array into the callback.
+  cb(arr[arr.length-1]);
 }
+
+last(items, function(item) {
+  console.log(item);
+})
 
 function sumNums(x, y, cb) {
   // sumNums adds two numbers (x, y) and passes the result to the callback.
+  return cb(x + y);
 }
+
+sumNums(4, 3, item => console.log(item));
 
 function multiplyNums(x, y, cb) {
   // multiplyNums multiplies two numbers and passes the result to the callback.
+  return cb(x*y);
 }
+
+multiplyNums(1,2, item => console.log(item));
 
 function contains(item, list, cb) {
   // contains checks if an item is present inside of the given array/list.
   // Pass true to the callback if it is, otherwise pass false.
+  return cb(list.includes(item));
 }
+
+contains("Gum", items, value => console.log(value));
 
 /* STRETCH PROBLEM */
 
+const myItems = ['China','China','Fortune','Pickles'];
+
+//first try
 function removeDuplicates(array, cb) {
   // removeDuplicates removes all duplicate values from the given array.
   // Pass the duplicate free array to the callback function.
   // Do not mutate the original array.
+  let duplicateFree = [];
+  for (let i = 0; i < array.length; i++){
+    if (!array.slice(i+1,array.length).includes(array[i])) {
+      duplicateFree.push(array[i]);
+    }
+  }
+  return cb(duplicateFree);
 }
+
+//second try
+function removeDuplicates(array, cb) {
+  duplicateFree = array.filter( (item, index) => !array.slice(index+1, array.length).includes(item));
+  return cb(duplicateFree);
+}
+
+//third try
+function removeDuplicates(array, cb) {
+  duplicateFree = array.filter( (item) => !array.slice(index+1, array.length).includes(item));
+  return cb(duplicateFree);
+}
+//gave up trying to make it simpler
+
+removeDuplicates(myItems, function(list){
+  console.log(list);
+})
